@@ -12,7 +12,7 @@ import org.hibernate.search.annotations.Store;
  * @author Jay Shaughnessy
  * @author Lucas Ponce
  */
-@Indexed(index = "person")
+@Indexed(index = "alert")
 public class Alert implements Serializable {
     @Field(store = Store.YES, analyze = Analyze.NO)
     String tenant;
