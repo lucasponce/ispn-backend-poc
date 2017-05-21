@@ -116,7 +116,8 @@ public class CassBackendApp {
 
         // Final query
         /*
-            This query strategy has a limit when # of connections increase
+            This query strategy has a limit when # of ids is greater than max connections in queue.
+            So at the end, for big queries, all data should be fetched and filtered on client.
 
             List<ResultSet> rsAlerts;
             futures = new ArrayList<ResultSetFuture>();

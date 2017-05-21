@@ -1,5 +1,7 @@
 package org.hawkular.alerts;
 
+import java.io.Serializable;
+
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
@@ -11,7 +13,7 @@ import org.hibernate.search.annotations.Store;
  * @author Lucas Ponce
  */
 @Indexed(index = "person")
-public class Alert {
+public class Alert implements Serializable {
     @Field(store = Store.YES, analyze = Analyze.NO)
     String tenant;
 
