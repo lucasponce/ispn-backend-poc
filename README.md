@@ -11,15 +11,15 @@ Motivation to choose a Cassandra backend was focus to consistency and unified th
 
 But main performance tasks of Hawkular Alerting are focus on detection anomalies rather on high intensive read/write from the backend.
  
-So, in the context of a next light weight architecture of Hawkular Alerting, the backend decision could be revisite.
+So, in the context of a next light weight architecture of Hawkular Alerting, the backend decision could be revisited.
  
 ## ISPN 9
 
-The motivation to study ISPN 9 as backend for Alerting can be summary on the following arguments:
+The motivation to study ISPN 9 as backend for Alerting can be summarized on the following arguments:
 
 - ISPN is currently part of the core architecture of Hawkular Alerting.
 - ISPN 9 brings new off-heap features.
-- Indexing engine features matches with Hawkular Alerting query use cases.
+- Indexing engine features matches Hawkular Alerting query use cases.
 - ISPN 9 storage options makes interesting to delegate the backend (memory, filesystem, database) as part of final configuration.
   
 ## Preliminar testing
