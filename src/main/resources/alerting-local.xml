@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<infinispan
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="urn:infinispan:config:9.0 http://www.infinispan.org/schemas/infinispan-config-9.0.xsd"
+    xmlns="urn:infinispan:config:9.0">
+
+  <cache-container name="hawkular-alerts">
+
+    <local-cache name="backend">
+      <indexing index="LOCAL">
+        <indexed-entities>
+          <indexed-entity>org.hawkular.alerts.Alert</indexed-entity>
+        </indexed-entities>
+        <!-- Enabled fastest writer: NRT backend -->
+
+        <property name="default.indexmanager">near-real-time</property>
+        <!--
+        <property name="default.indexBase">${java.io.tmpdir}/tunedConfDir</property>
+        -->
+        <!-- Write indexes in Infinispan -->
+        <property name="default.directory_provider">infinispan</property>
+        <property name="default.chunk_size">128000</property>
+        <property name="default.locking_cachename">LuceneIndexesLocking_custom</property>
+        <property name="default.data_cachename">LuceneIndexesData_custom</property>
+        <property name="default.metadata_cachename">LuceneIndexesMetadata_custom</property>
+
+        <!-- The default is 10, but we don't want to waste many cycles in merging
+         (tune for writes at cost of reader fragmentation) -->
+        <property name="default.indexwriter.merge_factor">30</property>
+        <!-- Never create segments larger than 1GB -->
+        <property name="default.indexwriter.merge_max_size">1024</property>
+        <!-- IndexWriter flush buffer size in MB -->
+        <property name="default.indexwriter.ram_buffer_size">64</property>
+        <!-- Enable sharding on writers -->
+        <property name="default.sharding_strategy.nbr_of_shards">6</property>
+        <property name="lucene_version">LUCENE_CURRENT</property>
+      </indexing>
+    </local-cache>
+
+    <!-- *************************************** -->
+    <!--  Cache to store Lucene's file metadata  -->
+    <!-- *************************************** -->
+    <local-cache name="LuceneIndexesMetadata_custom">
+      <transaction mode="NON_XA" />
+      <persistence passivation="false">
+        <file-store preload="true" fetch-state="true" read-only="false" purge="false" path="${java.io.tmpdir}/asyncStore">
+          <write-behind thread-pool-size="5" />
+        </file-store>
+      </persistence>
+      <indexing index="NONE"/>
+    </local-cache>
+    <!-- **************************** -->
+    <!--  Cache to store Lucene data  -->
+    <!-- **************************** -->
+    <local-cache name="LuceneIndexesData_custom">
+      <transaction mode="NON_XA" />
+      <persistence passivation="false">
+        <file-store preload="true" fetch-state="true" read-only="false" purge="false" path="${java.io.tmpdir}/asyncStore">
+          <write-behind thread-pool-size="5" />
+        </file-store>
+      </persistence>
+      <indexing index="NONE" />
+    </local-cache>
+    <!-- ***************************** -->
+    <!--  Cache to store Lucene locks  -->
+    <!-- ***************************** -->
+    <local-cache name="LuceneIndexesLocking_custom">
+      <transaction mode="NON_XA" />
+      <persistence passivation="false">
+        <file-store preload="true" fetch-state="true" read-only="false" purge="false" path="${java.io.tmpdir}/asyncStore">
+          <write-behind thread-pool-size="5" />
+        </file-store>
+      </persistence>
+      <indexing index="NONE" />
+    </local-cache>
+
+  </cache-container>
+</infinispan>
