@@ -14,11 +14,13 @@
   <cache-container name="hawkular-alerts">
 
     <local-cache name="backend">
+      <!--
       <persistence passivation="false">
         <rdb:rocksdb-store path="/tmp/rocksdb/52/data" shared="false" preload="true">
           <rdb:expiration path="/tmp/rocksdb/52/expired"/>
         </rdb:rocksdb-store>
       </persistence>
+      -->
       <!--
       <persistence>
         <file-store preload="true" fetch-state="true" read-only="false" purge="false" path="${java.io.tmpdir}/asyncStore">

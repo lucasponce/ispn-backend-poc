@@ -25,6 +25,7 @@ public class IspnBackendApp
     static Cache<String, Alert> backend;
     static QueryFactory qf;
     static Query qTriggerId;
+    static Query qTags;
 
     static void init() throws IOException {
         cacheManager = new DefaultCacheManager(IspnBackendApp.class.getResourceAsStream(ISPN_CONFIG_LOCAL));
@@ -37,6 +38,7 @@ public class IspnBackendApp
                     .or()
                     .having("triggerId").equal("trigger1"))
                 .build();
+        qTags = qf.create("from org.hawkular.alerts.Alert where tags like 'tag0:value0' or tags like 'tag1:value1'");
     }
 
     static void loadData() {
@@ -45,7 +47,8 @@ public class IspnBackendApp
             String triggerId = "trigger" + (i % 10);
             String status = "status" + (i % 3);
             Alert a = new Alert(TENANT, id, triggerId, i, status);
-            backend.putAsync(id, a);
+            a.addTag("tag" + (i % 2), "value" + (i % 4));
+            backend.putAsync(id, a); // Async works but query probably is not ready in low iterations
         }
     }
 
@@ -54,13 +57,24 @@ public class IspnBackendApp
         System.out.println("Filtered by ctime > 900000 and (trigger0 or trigger1): " + results);
     }
 
+    static void queryAlertsByTags() {
+        int results = qTags.getResultSize();
+        System.out.println("Filtered by tags: tag1:value1 or tag0:value0 " + results);
+    }
+
     public static void main( String[] args ) throws Exception {
         System.out.println( "Start ISPN Test" );
         long start = currentTimeMillis();
         init();
         loadData();
-        System.out.println("Loaded:" + (currentTimeMillis() - start) + "ms");
+        long now = currentTimeMillis();
+        System.out.println("Loaded [" + (now - start) + " ms]");
+        start = now;
         queryAlertsByTrigger();
-        System.out.println("Queried:" + (currentTimeMillis() - start) + "ms");
+        now = currentTimeMillis();
+        System.out.println("Query [" + (now - start) + " ms]");
+        start = now;
+        queryAlertsByTags();
+        System.out.println("Query [" + (currentTimeMillis() - start) + " ms]");
     }
 }

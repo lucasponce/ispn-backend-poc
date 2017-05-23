@@ -1,9 +1,12 @@
 package org.hawkular.alerts;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.SortableField;
 import org.hibernate.search.annotations.Store;
@@ -29,6 +32,10 @@ public class Alert implements Serializable {
 
     @Field(store = Store.YES, analyze = Analyze.NO)
     String status;
+
+    @Field(store = Store.YES, analyze = Analyze.NO)
+    @FieldBridge(impl = TagsBridge.class)
+    Map<String, String> tags = new HashMap<>();
 
     public Alert() {
     }
@@ -81,6 +88,28 @@ public class Alert implements Serializable {
         this.status = status;
     }
 
+    public Map<String, String> getTags() {
+        return tags;
+    }
+
+    public void setTags(Map<String, String> tags) {
+        this.tags = tags;
+    }
+
+    public void addTag(String name, String value) {
+        if (null == name || null == value) {
+            throw new IllegalArgumentException("Tag must have non-null name and value");
+        }
+        tags.put(name, value);
+    }
+
+    public void removeTag(String name) {
+        if (null == name) {
+            throw new IllegalArgumentException("Tag must have non-null name");
+        }
+        tags.remove(name);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -92,7 +121,8 @@ public class Alert implements Serializable {
         if (tenant != null ? !tenant.equals(alert.tenant) : alert.tenant != null) return false;
         if (id != null ? !id.equals(alert.id) : alert.id != null) return false;
         if (triggerId != null ? !triggerId.equals(alert.triggerId) : alert.triggerId != null) return false;
-        return status != null ? status.equals(alert.status) : alert.status == null;
+        if (status != null ? !status.equals(alert.status) : alert.status != null) return false;
+        return tags != null ? tags.equals(alert.tags) : alert.tags == null;
     }
 
     @Override
@@ -102,6 +132,7 @@ public class Alert implements Serializable {
         result = 31 * result + (triggerId != null ? triggerId.hashCode() : 0);
         result = 31 * result + (int) (ctime ^ (ctime >>> 32));
         result = 31 * result + (status != null ? status.hashCode() : 0);
+        result = 31 * result + (tags != null ? tags.hashCode() : 0);
         return result;
     }
 
@@ -113,6 +144,7 @@ public class Alert implements Serializable {
                 ", triggerId='" + triggerId + '\'' +
                 ", ctime=" + ctime +
                 ", status='" + status + '\'' +
+                ", tags='" + tags + '\'' +
                 '}';
     }
 }
