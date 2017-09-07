@@ -6,5 +6,5 @@ package org.hawkular.alerts;
  */
 public class Common {
     public static final String TENANT = "poc-tenant";
-    public static final long TEST_ENTRIES_SIZE = 1000000;
+    public static final long TEST_ENTRIES_SIZE = 1;
 }

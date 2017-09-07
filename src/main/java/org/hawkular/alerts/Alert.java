@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Indexed;
@@ -33,8 +34,9 @@ public class Alert implements Serializable {
     @Field(store = Store.YES, analyze = Analyze.NO)
     String status;
 
-    @Field(store = Store.YES, analyze = Analyze.NO)
+    @Field(store = Store.YES, analyze = Analyze.YES)
     @FieldBridge(impl = TagsBridge.class)
+    @Analyzer(impl = TagsBridge.TagsAnalyzer.class)
     Map<String, String> tags = new HashMap<>();
 
     public Alert() {

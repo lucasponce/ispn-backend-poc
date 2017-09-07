@@ -21,17 +21,16 @@
         </rdb:rocksdb-store>
       </persistence>
       -->
-      <!--
       <persistence>
-        <file-store preload="true" fetch-state="true" read-only="false" purge="false" path="${java.io.tmpdir}/asyncStore">
+        <file-store preload="true" fetch-state="true" read-only="false" purge="false" path="${poc.test}/ispn">
           <write-behind thread-pool-size="5" modification-queue-size="10000" />
         </file-store>
       </persistence>
-      -->
       <indexing index="LOCAL">
         <indexed-entities>
           <indexed-entity>org.hawkular.alerts.Alert</indexed-entity>
         </indexed-entities>
+        <!-- property name="default.indexBase">${hawkular.data}/alerting/lucene-debug</property-->
         <!-- Enabled fastest writer: NRT backend -->
 
         <property name="default.indexmanager">near-real-time</property>
@@ -64,7 +63,7 @@
     <local-cache name="LuceneIndexesMetadata_custom">
       <transaction mode="NON_XA" />
       <persistence passivation="false">
-        <file-store preload="true" fetch-state="true" read-only="false" purge="false" path="${java.io.tmpdir}/asyncStore">
+        <file-store preload="true" fetch-state="true" read-only="false" purge="false" path="${poc.test}/ispn">
           <write-behind thread-pool-size="5" />
         </file-store>
       </persistence>
@@ -76,7 +75,7 @@
     <local-cache name="LuceneIndexesData_custom">
       <transaction mode="NON_XA" />
       <persistence passivation="false">
-        <file-store preload="true" fetch-state="true" read-only="false" purge="false" path="${java.io.tmpdir}/asyncStore">
+        <file-store preload="true" fetch-state="true" read-only="false" purge="false" path="${poc.test}/ispn">
           <write-behind thread-pool-size="5" />
         </file-store>
       </persistence>
@@ -88,7 +87,7 @@
     <local-cache name="LuceneIndexesLocking_custom">
       <transaction mode="NON_XA" />
       <persistence passivation="false">
-        <file-store preload="true" fetch-state="true" read-only="false" purge="false" path="${java.io.tmpdir}/asyncStore">
+        <file-store preload="true" fetch-state="true" read-only="false" purge="false" path="${poc.test}/ispn">
           <write-behind thread-pool-size="5" />
         </file-store>
       </persistence>

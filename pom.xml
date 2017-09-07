@@ -63,6 +63,19 @@
       <version>${version.com.fasterxml.jackson}</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-slf4j-impl</artifactId>
+      <version>${version.org.apache.logging.log4j}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>${version.org.apache.logging.log4j}</version>
+    </dependency>
+
+
   </dependencies>
 
   <build>
@@ -82,6 +95,7 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <version.org.apache.logging.log4j>2.8.1</version.org.apache.logging.log4j>
     <version.org.hibernate>5.7.0.Final</version.org.hibernate>
     <version.org.infinispan>9.0.0.Final</version.org.infinispan>
     <version.com.datastax.cassandra>3.0.5</version.com.datastax.cassandra>
